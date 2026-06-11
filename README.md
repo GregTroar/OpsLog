@@ -59,33 +59,6 @@ OpsLog is a full station logbook designed for the operator who works DX, chases 
 
 Download the latest release from the [Releases](../../releases) page and run `OpsLog.exe`. The application creates a `data/` folder next to the executable (configuration, log database, cty.dat) — delete the folder, and the app is gone. No installer, no registry.
 
-## Building from source
-
-Prerequisites: **Go 1.22+**, **Node.js 18+**, and the Wails CLI:
-
-```bash
-go install github.com/wailsapp/wails/v2/cmd/wails@latest
-```
-
-Then:
-
-```bash
-git clone https://github.com/rouggy/OpsLog.git
-cd OpsLog
-
-# Development mode (hot reload)
-wails dev
-
-# Production build → build/bin/OpsLog.exe
-wails build
-```
-
-Run the test suite:
-
-```bash
-go test ./...
-```
-
 ## Architecture
 
 ```
