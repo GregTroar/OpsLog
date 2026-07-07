@@ -1,12 +1,27 @@
 # OpsLog
 
 A modern, fast ham-radio logger for Windows — Log4OM-style entry, real-time CAT
-(OmniRig **and** native FlexRadio/SmartSDR), DX cluster, awards tracking, maps,
-QSL management and a QSL-card designer. Built with **Wails v2** (Go backend +
+for **OmniRig**, native **FlexRadio/SmartSDR**, native **Icom CI-V** (USB **and**
+remote-over-internet, replacing RS-BA1) and **TCI** (SunSDR / Expert Electronics),
+DX cluster with spot alerts, awards tracking, maps, contest logging, QSL
+management and a QSL-card designer. Built with **Wails v2** (Go backend +
 React/TypeScript frontend), **pure Go** (no CGO): SQLite for configuration,
 optional **shared MySQL** for the logbook so several operators can run one log.
+Fully themeable and bilingual (English / French).
 
 Developed by **F4BPO**.
+
+---
+
+## Building / developing
+
+- **Dev:** `wails dev` (Vite hot-reload; Go methods reachable at http://localhost:34115).
+- **Build:** `wails build` (use the project's wails v2.11 — `~/go/bin/wails.exe`).
+- **Regenerate Go↔TS bindings** after changing exported `App` methods:
+  `wails generate module`.
+- **Release:** `.vscode/release.ps1` (Ctrl+Shift+P → *Tasks: Run Task* →
+  *Release OpsLog*) — bumps the version, pushes source to Gitea, builds the exe
+  and publishes it to Gitea + GitHub releases.
 
 ---
 
@@ -18,10 +33,16 @@ Developed by **F4BPO**.
 - **Callsign lookup** (QRZ.com / HamQTH) with photo, auto-fill of name/QTH/grid
   and the QRZ.com tab.
 - **Offline DXCC** resolution from `cty.dat` (country, CQ/ITU zones, continent),
-  with `/MM` `/AM` and call-area (`/8`, `/W6`) handling, plus ClubLog DXpedition
-  date overrides.
+  with `/MM` `/AM` `/B` (beacon) and call-area (`/8`, `/W6`) handling, plus
+  ClubLog DXpedition date overrides.
 - **Recent QSOs**, **Worked-before** matrix (per band/mode slot), bulk re-resolve
   from cty/QRZ/ClubLog, bulk send to QSL services.
+- **Advanced QSO filter builder** (field / operator / value, AND / OR, saved
+  presets) with filtered- and selected-row **ADIF export**.
+- **Find duplicates** (Tools) — groups QSOs by same call + band + mode (optionally
+  same day / minute) and lets you pick which to delete.
+- **ADIF 3.1.7 compliant** import/export: a full field dictionary, 30 promoted
+  columns, a generic "extra fields" editor and standard/all export modes.
 - **Profiles:** every setting is per-profile; each profile can point its logbook
   at the local SQLite file or a **shared MySQL** database (multi-operator).
 
@@ -29,7 +50,8 @@ Developed by **F4BPO**.
 
 - **Main view = two configurable panes** (per profile, Settings → General →
   *Main view*): great-circle map, locator (street) map, the cluster grid, the
-  worked-before grid, or the **FlexRadio controls**.
+  worked-before grid, recent QSOs, the **FlexRadio controls**, the **Icom
+  console** or the **Net control** panel.
 - **Great-circle map** with short/long-path distance & azimuth, selectable
   basemaps (Light / Voyager / Street / Satellite, all key-free and labelled) and
   the **antenna beam lobe(s)** drawn from the rotor azimuth.
@@ -46,15 +68,29 @@ Developed by **F4BPO**.
   pane, with a show/hide toggle.
 - Per-spot **status** (new / new-band / new-slot / worked), click-to-tune the
   rig, and a multi-band **Band Map** (panadapter-style strips).
+- **POTA** spots are tagged with their park reference (via `api.pota.app`).
+- **Spot alerts** (Log4OM-style): rules on call / country / band / mode /
+  spotter, with sound, visual and e-mail notification (Tools → *Alert
+  management*).
 
 ## CAT control
 
-- **OmniRig** backend (Rig 1/2, hot-swap), and a native **FlexRadio (SmartSDR)**
-  backend over the radio's TCP API — real-time slice freq/mode/split, auto
-  reconnect, UDP discovery, and **panadapter spots** (cluster spots pushed to the
-  Flex display, click → fill the call).
-- Mode is taken from the radio; the digital sub-mode (FT4 vs FT8) is inferred
-  from the frequency.
+Four native backends (Settings → CAT), each with auto-reconnect and a fast,
+non-blocking connect so a powered-off radio never freezes the app:
+
+- **OmniRig** (Rig 1/2, hot-swap) — works with any OmniRig-supported rig.
+- **FlexRadio (SmartSDR)** over the radio's TCP API — real-time slice freq /
+  mode / split, UDP discovery, and **panadapter spots** (cluster spots pushed to
+  the Flex display, click → fill the call).
+- **Icom CI-V** — native, over the radio's **USB** port *or* over the internet
+  via the radio's **built-in LAN server** (see *Remote Icom* below). No RS-BA1 or
+  Remote Utility needed.
+- **TCI** (WebSocket) — SunSDR / ExpertSDR2 and any TCI-compatible server:
+  freq / mode / PTT / split, plus optional panorama spots.
+
+Mode is taken from the radio; the digital sub-mode (FT4 vs FT8) is inferred from
+the frequency. **Per-band Flex RX/TX antennas** can be configured and are applied
+automatically on band change.
 
 ### FlexRadio control tab (SmartSDR-style)
 
@@ -68,25 +104,77 @@ Shown only when the CAT backend is a FlexRadio:
 - **Live meters** over the UDP VITA-49 stream: S-meter (S-units), forward power
   (W), SWR, ALC, PA temperature, voltage, plus the amplifier's meters.
 
+### Icom control tab
+
+Shown when the CAT backend is Icom (USB or network). A full RS-BA1-style console:
+
+- **Twin VFO readout** (MAIN / SUB) with the big tabular frequency, mode badge,
+  band and RIT/ΔTX offset, and a **mode-button row** (SSB / CW / RTTY / PSK /
+  AM / FM).
+- **Spectrum scope + waterfall** (panadapter): ON/OFF, CTR/FIX, double-click to
+  tune, and **◀ ⊙ ▶** buttons to centre the scope on the current frequency
+  (±50 kHz) and pan left/right.
+- **Live meters** always visible: S-meter (click → fill RST), power in watts, SWR.
+- **Receive DSP:** AF / RF gain, squelch, AGC, preamp, attenuator, filter
+  (FIL1/2/3), NB, NR, ANF and — **on CW only** — the **APF** (audio peak filter).
+- **Passband / notch:** Twin PBT (inner / outer), manual notch + position.
+- **Transmit:** RF power, MOX, TUNE, **split with an automatic offset**
+  (+5 kHz on SSB, +1 kHz on CW), and monitor. On **voice modes only**: mic gain,
+  speech compressor, VOX (+ gain + anti-VOX). Controls that don't apply to the
+  current mode are hidden automatically.
+- **Bands & antenna:** one-touch band buttons and ANT1/ANT2 selection.
+- **Clarifiers:** RIT and ΔTX with wheel / ± tuning (Ctrl+←/→ nudges RIT).
+- **Power ON / OFF** buttons (manual by design — the app never wakes the rig on
+  connect).
+- **CW keying** can run through the radio's own keyer (see *Keyers* below).
+
+### Remote Icom (over the internet, no RS-BA1)
+
+OpsLog speaks the IC-7610's built-in network protocol directly — it **replaces
+both the Icom Remote Utility and RS-BA1**. Enter the radio's IP, the Network
+User1 name/password and the CI-V address, and the whole Icom console works over
+the LAN/internet: login + token (auto-renewed), CI-V tunnel, receive-side
+retransmit for a rock-solid link even with the panadapter streaming, and manual
+power ON/OFF. (Audio is out of scope — use the radio in USB + a voice link such
+as Mumble.)
+
 ## Keyers & audio
 
-- **WinKeyer** CW keyer (macros, F-key macros, auto-call repeat).
-- **Digital Voice Keyer** (DVK) message playback.
-- **QSO audio recording** (SSB/DAX) archived per QSO; disabled for CW (no DAX
-  audio in CW).
+- **CW keyer** with macros and F-key macros. The keyer engine is selectable:
+  **WinKeyer** (K1EL WK1/2/3 over a COM port), **Icom** (the radio's own keyer
+  over CI-V — no extra hardware, works over the remote link too) or **TCI**.
+- **Digital Voice Keyer** (DVK): record F1–F6 voice messages and transmit them.
+- **QSO audio recording:** continuous rolling capture; on *Log QSO* the contact
+  is saved to a per-QSO WAV (`CALL_YYYYMMDD_HHMMSS.wav`); mixes RX + mic.
+
+## Amplifiers & switches
+
+- **PowerGenius XL** (4O3A) amplifier — direct TCP: operate/standby, fan-mode
+  selector and fault display.
+- **Antenna Genius** (4O3A) antenna switch over TCP/GSCP — a docked A/B
+  antenna-switch widget.
 
 ## QSL & awards
 
 - **Awards engine:** built-in + custom award definitions (shared **globally**
-  across profiles), worked/confirmed/validated by band & mode, OR rules and
-  manual reference assignment, live reference detection on call entry, and a
-  **Rescan** that re-pulls the logbook (picks up fresh LoTW/QRZ confirmations).
+  across profiles) — DXCC, WAS / WAZ / WAC, WPX, IOTA / POTA / SOTA / WWFF,
+  **DDFM**, worked/confirmed/validated by band & mode, OR rules and manual
+  reference assignment, live reference detection on call entry, **reference-list
+  import** for totals/names, and a **Rescan** that re-pulls the logbook (picks up
+  fresh LoTW/QRZ confirmations).
 - **QSL services:** ClubLog (batched ADIF upload), LoTW, QRZ.com, eQSL — upload
   and **confirmation download** (which auto-refreshes the award stats).
 - **QSL Card Designer** (see below).
 - **E-mail eQSL:** right-click a QSO → *Send eQSL by e-mail* via the configured
   SMTP account. (Outlook/Hotmail disable basic-auth SMTP — use Gmail with an app
   password, or a Microsoft app password.)
+
+## Contest logging
+
+- **Contest tab:** pick a contest (built-in ADIF `CONTEST_ID` list) and an
+  exchange (running serial or a fixed exchange). OpsLog auto-fills `CONTEST_ID`
+  and the sent/received serials (`STX` / `SRX`), enforces a window start/end,
+  flags dupes and keeps a live scoreboard.
 
 ## Multi-operator live status (special events)
 
@@ -99,10 +187,37 @@ own web server reads that table and produces a live page/image you can embed on
 the station's **QRZ.com** bio (`<img src="…/tm74-status.php?img=1">`). OpsLog
 only writes to the DB — it is not a web server.
 
+## Net control
+
+- **Directed-net logging** (Tools → Net): a global roster (`nets.json`) plus an
+  in-memory active session — check stations in, then log the whole net at once
+  using the CAT frequency.
+
+## Appearance & language
+
+- **Themes:** four complete themes (Warm light, Warm dark, Graphite dark, High
+  contrast) plus **Auto** (follows the OS light/dark preference), selectable in
+  Settings → General. Every panel and every AG-Grid table follows the theme.
+- **Bilingual:** full **English / French** UI, with a first-run flag chooser and
+  a switcher in Settings → General.
+
+## Security
+
+- **Secret vault:** opt-in passphrase encryption of the stored passwords
+  (AES-GCM + PBKDF2). Encrypted values are portable; a single unlock prompt at
+  launch decrypts them for the session.
+
+## Integrations (outbound)
+
+- **UDP emitters:** push the current frequency to **PstRotator**, radio info in
+  **N1MM `RadioInfo`** format, or an **ADIF record on each logged QSO** — so
+  external tools (rotator control, digital apps, other loggers) stay in sync.
+
 ## Other
 
 - **Autostart:** launch external programs (WSJT-X, JTAlert, rotator control…) at
   OpsLog startup, skipping any already running.
+- **Backup:** optional database + ADIF backup at shutdown.
 - **Update check** at startup with a toast (toggleable).
 - **Anonymous usage telemetry** (a once-a-day heartbeat: random install ID +
   version + OS — no callsign or QSO data; opt-out in Preferences).
@@ -144,3 +259,7 @@ commonly-worked DXCC entities.
   `data/` — instant even when the logbook is on a far-away MySQL.
 - **Logbook** (QSOs) lives where the active profile points it: the local SQLite
   file or a per-profile shared **MySQL** database.
+
+---
+
+*A French version of this document is available in [README.fr.md](README.fr.md).*
