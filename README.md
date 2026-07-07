@@ -13,18 +13,6 @@ Developed by **F4BPO**.
 
 ---
 
-## Building / developing
-
-- **Dev:** `wails dev` (Vite hot-reload; Go methods reachable at http://localhost:34115).
-- **Build:** `wails build` (use the project's wails v2.11 — `~/go/bin/wails.exe`).
-- **Regenerate Go↔TS bindings** after changing exported `App` methods:
-  `wails generate module`.
-- **Release:** `.vscode/release.ps1` (Ctrl+Shift+P → *Tasks: Run Task* →
-  *Release OpsLog*) — bumps the version, pushes source to Gitea, builds the exe
-  and publishes it to Gitea + GitHub releases.
-
----
-
 ## Logging
 
 - **Log4OM-style entry strip:** callsign, RST tx/rx, name/QTH/grid, band/mode,
