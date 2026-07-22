@@ -43,7 +43,10 @@ Developed by **F4BPO**.
   with `/MM` `/AM` `/B` (beacon) and call-area (`/8`, `/W6`) handling, plus
   ClubLog DXpedition date overrides.
 - **Recent QSOs**, **Worked-before** matrix (per band/mode slot), bulk re-resolve
-  from cty/QRZ/ClubLog, bulk send to QSL services.
+  from cty/QRZ/ClubLog, bulk send to QSL services. A live **selection count**, a
+  **Select all / Unselect all** toggle, and a row limit that keeps the full log
+  fast **but is lifted while a filter is active** (every match is shown, not just
+  the first page).
 - **Advanced QSO filter builder** (field / operator / value, AND / OR, saved
   presets) with filtered- and selected-row **ADIF export**.
 - **Find duplicates** (Tools) — groups QSOs by same call + band + mode (optionally
@@ -62,7 +65,10 @@ Developed by **F4BPO**.
 - **Great-circle map** with short/long-path distance & azimuth, selectable
   basemaps (Light / Voyager / Street / Satellite, all key-free and labelled) and
   the **antenna beam lobe(s)** drawn from the rotor azimuth.
-- **Rotor compass** (azimuthal-equidistant, click-to-turn) driven by PstRotator.
+- **Rotor compass** (azimuthal-equidistant, click-to-turn) driven by
+  **PstRotator** (UDP), a **4O3A Rotator Genius** (native TCP) or a **microHAM
+  ARCO** controlled natively — no PstRotator needed — over the **LAN** or **USB**
+  using its Yaesu GS-232A protocol.
 - **Ultrabeam** support (Normal / 180° reverse / Bidirectional): the radiating
   direction is shown in green and the **mechanical boom** in grey, on both the
   compass and the map, so you never lose track of where the antenna points.
@@ -74,7 +80,9 @@ Developed by **F4BPO**.
   mode / status / source) shared by the Cluster tab and the Main-view cluster
   pane, with a show/hide toggle.
 - Per-spot **status** (new / new-band / new-slot / worked), click-to-tune the
-  rig, and a multi-band **Band Map** (panadapter-style strips).
+  rig, and a multi-band **Band Map** (panadapter-style strips). Optionally, all
+  **digital modes count as one** (DXCC-style) for the new/new-slot colouring and
+  the worked-before matrix badges (Settings → General).
 - **POTA** spots are tagged with their park reference (via `api.pota.app`).
 - **Spot alerts** (Log4OM-style): rules on call / country / band / mode /
   spotter, with sound, visual and e-mail notification (Tools → *Alert
@@ -88,7 +96,8 @@ non-blocking connect so a powered-off radio never freezes the app:
 - **OmniRig** (Rig 1/2, hot-swap) — works with any OmniRig-supported rig.
 - **FlexRadio (SmartSDR)** over the radio's TCP API — real-time slice freq /
   mode / split, UDP discovery, and **panadapter spots** (cluster spots pushed to
-  the Flex display, click → fill the call).
+  the Flex display; a click fills the call and **tunes the rig to the right
+  frequency AND mode**).
 - **Icom CI-V** — native, over the radio's **USB** port *or* over the internet
   via the radio's **built-in LAN server** (see *Remote Icom* below). No RS-BA1 or
   Remote Utility needed.
@@ -105,12 +114,16 @@ Shown only when the CAT backend is a FlexRadio:
 
 - **Transmit:** RF power, tune power, TUNE, MOX, speech processor (NOR/DX/DX+),
   VOX (+ level + delay), monitor (+ level), mic gain.
-- **Receive (active slice):** AGC mode/threshold, audio level, NB / NR / ANF.
+- **Receive (active slice):** RX/TX **antenna** selectors and a **DAX** toggle
+  (TX audio through DAX, for WSJT-X & co), AGC mode/threshold, audio level,
+  NB / WNB / NR / ANF, and — on **SmartSDR v4** radios (8000 / Aurora series) —
+  the extra DSP tools **NRL, NRS, NRF** (with level) plus **RNN** (AI noise
+  reduction) and **ANFT** (FFT auto-notch), shown automatically when the radio
+  supports them. **RIT / XIT** with wheel / ± tuning.
 - **Antenna tuner (ATU):** tune / bypass / memories.
-- **Amplifier:** the amp card follows whichever amplifier is configured —
-  **PowerGenius XL** (operate/standby, fan mode, fault) or **SPE Expert**
-  (operate/standby, ON/OFF, Low/Mid/High level, output-power bar, band &
-  temperature).
+- **Amplifier:** the amp card follows whichever amplifier is configured, with a
+  dropdown to pick it when **several amplifiers** are set up (e.g. two SPEs run
+  in parallel). See *Amplifiers & switches* below.
 - **Live meters** over the UDP VITA-49 stream: S-meter (S-units), forward power
   (W), SWR, ALC, PA temperature, voltage, plus the amplifier's meters.
 
@@ -161,14 +174,21 @@ as Mumble.)
 
 ## Amplifiers & switches
 
-- **Amplifiers** (Settings → Amplifier — the control card appears on the
-  FlexRadio tab, or on its own when neither Flex nor Icom is active):
+- **Amplifiers** — configure **one or several** amps (Settings → Amplifier is a
+  list; e.g. two SPEs run in parallel for more power). Each amp's control card
+  appears on the FlexRadio tab and in **Station Control**, with a dropdown to
+  choose which one it shows; the bottom status bar carries **one clickable chip
+  per amp** (green = OPERATE, orange = STANDBY, red = offline). Supported:
   - **PowerGenius XL** (4O3A) over direct TCP — operate/standby, fan-mode
     selector and fault display.
   - **SPE Expert** (1.3K-FA / 1.5K-FA / 2K-FA) over **USB** (virtual COM) or the
     **network** (RS232-to-Ethernet bridge) — operate/standby, ON/OFF,
     Low / Mid / High output level, an output-power bar and live status (band,
     SWR, PA current, temperature, warnings/alarms).
+  - **ACOM** (500S / 600S / 700S / 1200S / 2020S) over **USB** or the **network**
+    (RS232-to-Ethernet bridge) — operate/standby/off and live telemetry (forward
+    & reflected power, SWR, PA temperature, band, fan, faults). Power-ON works
+    over a serial cable that wires the DTR/RTS lines.
 - **Antenna Genius** (4O3A) antenna switch over TCP/GSCP — a docked A/B
   antenna-switch widget.
 - **Station Control** panel (dockable, drag-to-reorder widgets): the **rotator**,
@@ -211,10 +231,11 @@ as Mumble.)
 
 ## Multi-operator live status (special events)
 
-For a multi-op special-event call on a shared MySQL logbook (e.g. **TM74TFR**):
-Settings → General → *Publish live operator status*. Each OpsLog instance
+For a multi-op special-event call on a shared MySQL logbook (e.g. **TM74TFR**),
+publishing is **automatic** — no setting to turn on. Each OpsLog instance
 heartbeats its current activity (operator call, band, frequency, mode) into a
-`live_status` table every ~15 s. A small PHP renderer
+`live_status` table every ~15 s, and drops back to *off air* automatically 5 min
+after the last logged QSO. A small PHP renderer
 ([`docs/livestatus/tm74-status.php`](docs/livestatus/tm74-status.php)) on your
 own web server reads that table and produces a live page/image you can embed on
 the station's **QRZ.com** bio (`<img src="…/tm74-status.php?img=1">`). OpsLog
@@ -223,8 +244,11 @@ only writes to the DB — it is not a web server.
 ## Net control
 
 - **Directed-net logging** (Tools → Net): a global roster (`nets.json`) plus an
-  in-memory active session — check stations in, then log the whole net at once
-  using the CAT frequency.
+  in-memory active session — check stations in, then log them individually or the
+  whole net at once (**Log everyone**) using the CAT frequency. **Drag & drop**
+  between the two lists (roster → on-air starts a QSO, on-air → roster logs it),
+  and after each log the next on-air station is selected automatically so you can
+  chain contacts.
 
 ## Appearance & language
 
