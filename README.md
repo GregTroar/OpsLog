@@ -3,7 +3,7 @@
 <a href="https://www.paypal.com/donate/?hosted_button_id=PDMY7KV99K38S" target="_blank">
   <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate with PayPal" />
 </a>
-<a href="https://discord.gg/FYM8yw5pT" target="_blank">
+<a href="https://discord.gg/3fCGWdX7R" target="_blank">
   <img src="https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white" alt="Join our Discord" />
 </a>
 
