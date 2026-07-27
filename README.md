@@ -1,6 +1,6 @@
 # OpsLog
 
-<a href="https://www.paypal.com/donate?hosted_button_id=R9TC4KXWR96UE" target="_blank">
+<a href="https://www.paypal.com/donate/?hosted_button_id=PDMY7KV99K38S" target="_blank">
   <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate with PayPal" />
 </a>
 <a href="https://discord.gg/FYM8yw5pT" target="_blank">
