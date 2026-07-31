@@ -7,9 +7,9 @@
   <img src="https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white" alt="Join our Discord" />
 </a>
 
-A modern, fast ham-radio logger for Windows — Log4OM-style entry, real-time CAT
+A modern, fast ham-radio logger for Windows — real-time CAT
 for **OmniRig**, native **FlexRadio/SmartSDR**, native **Icom CI-V** (USB **and**
-remote-over-internet, replacing RS-BA1) and **TCI** (SunSDR / Expert Electronics),
+remote-over-internet, replacing RS-BA1) and **TCI** (SunSDR / Expert Electronics), native **Kenwood CAT**,
 DX cluster with spot alerts, awards tracking, maps, contest logging, QSL
 management and a QSL-card designer. Built with **Wails v2** (Go backend +
 React/TypeScript frontend), **pure Go** (no CGO): SQLite for configuration,
