@@ -1,15 +1,12 @@
 # OpsLog
 
-<a href="https://www.paypal.com/donate/?hosted_button_id=PDMY7KV99K38S" target="_blank">
-  <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate with PayPal" />
-</a>
 <a href="https://discord.gg/tmVPdQ5A8" target="_blank">
   <img src="https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white" alt="Join our Discord" />
 </a>
 
-A modern, fast ham-radio logger for Windows — real-time CAT
+A modern, fast ham-radio logger for Windows — single-strip entry, real-time CAT
 for **OmniRig**, native **FlexRadio/SmartSDR**, native **Icom CI-V** (USB **and**
-remote-over-internet, replacing RS-BA1) and **TCI** (SunSDR / Expert Electronics), native **Kenwood CAT**,
+remote-over-internet, replacing RS-BA1) and **TCI** (SunSDR / Expert Electronics),
 DX cluster with spot alerts, awards tracking, maps, contest logging, QSL
 management and a QSL-card designer. Built with **Wails v2** (Go backend +
 React/TypeScript frontend), **pure Go** (no CGO): SQLite for configuration,
@@ -34,7 +31,7 @@ Developed by **F4BPO**.
 
 ## Logging
 
-- **Log4OM-style entry strip:** callsign, RST tx/rx, name/QTH/grid, band/mode,
+- **Single-strip entry:** callsign, RST tx/rx, name/QTH/grid, band/mode,
   TX/RX frequency (split), start/end time, comment/note. The contacted entity's
   **flag** is shown large next to the RST fields.
 - **Callsign lookup** (QRZ.com / HamQTH) with photo, auto-fill of name/QTH/grid
@@ -42,6 +39,9 @@ Developed by **F4BPO**.
 - **Offline DXCC** resolution from `cty.dat` (country, CQ/ITU zones, continent),
   with `/MM` `/AM` `/B` (beacon) and call-area (`/8`, `/W6`) handling, plus
   ClubLog DXpedition date overrides.
+- **Editable lists** for bands, modes (with their default RST) and **satellites**
+  — the satellite name on the entry form is offered as a dropdown, because
+  SAT_NAME is compared character for character by the awards and by LoTW.
 - **Recent QSOs**, **Worked-before** matrix (per band/mode slot), bulk re-resolve
   from cty/QRZ/ClubLog, bulk send to QSL services. A live **selection count**, a
   **Select all / Unselect all** toggle, and a row limit that keeps the full log
@@ -60,11 +60,13 @@ Developed by **F4BPO**.
 
 - **Main view = two configurable panes** (per profile, Settings → General →
   *Main view*): great-circle map, locator (street) map, the cluster grid, the
-  worked-before grid, recent QSOs, the **FlexRadio controls**, the **Icom
-  console** or the **Net control** panel.
+  worked-before grid, recent QSOs, the **FT decodes**, or any of the radio
+  consoles — **FlexRadio**, **Icom**, **Yaesu**, **Elecraft K3/K4**, **SunSDR
+  (TCI)** — and the **Net control** panel. Up to four panes, in columns or a
+  quadrant.
 - **Great-circle map** with short/long-path distance & azimuth, selectable
-  basemaps (Light / Voyager / Street / Satellite, all key-free and labelled) and
-  the **antenna beam lobe(s)** drawn from the rotor azimuth.
+  basemaps (Light / Topo / Street / Satellite — Esri tiles, key-free and
+  labelled) and the **antenna beam lobe(s)** drawn from the rotor azimuth.
 - **Rotor compass** (azimuthal-equidistant, click-to-turn) driven by
   **PstRotator** (UDP), a **4O3A Rotator Genius** (native TCP) or a **microHAM
   ARCO** controlled natively — no PstRotator needed — over the **LAN** or **USB**
@@ -84,14 +86,16 @@ Developed by **F4BPO**.
   **digital modes count as one** (DXCC-style) for the new/new-slot colouring and
   the worked-before matrix badges (Settings → General).
 - **POTA** spots are tagged with their park reference (via `api.pota.app`).
-- **Spot alerts** (Log4OM-style): rules on call / country / band / mode /
+- **Spot alerts:** rules on call / country / band / mode /
   spotter, with sound, visual and e-mail notification (Tools → *Alert
   management*).
 
 ## CAT control
 
-Four native backends (Settings → CAT), each with auto-reconnect and a fast,
-non-blocking connect so a powered-off radio never freezes the app:
+Six native backends (Settings → CAT), each with auto-reconnect and a fast,
+non-blocking connect so a powered-off radio never freezes the app. The settings
+ask two questions rather than one — **which radio**, then **how it is
+connected** — and only offer the links that radio actually has:
 
 - **OmniRig** (Rig 1/2, hot-swap) — works with any OmniRig-supported rig.
 - **FlexRadio (SmartSDR)** over the radio's TCP API — real-time slice freq /
@@ -101,8 +105,17 @@ non-blocking connect so a powered-off radio never freezes the app:
 - **Icom CI-V** — native, over the radio's **USB** port *or* over the internet
   via the radio's **built-in LAN server** (see *Remote Icom* below). No RS-BA1 or
   Remote Utility needed.
-- **TCI** (WebSocket) — SunSDR / ExpertSDR2 and any TCI-compatible server:
-  freq / mode / PTT / split, plus optional panorama spots.
+- **Kenwood / Elecraft** — native ASCII CAT over USB or an RS232-to-Ethernet
+  bridge, for the K3 / K4 and the Kenwood dialect they share.
+- **Yaesu** — native ASCII CAT (FA/FB/MD/VS…), which replaces OmniRig for an
+  FTDX and gives the Yaesu console below.
+- **TCI** (WebSocket) — SunSDR / ExpertSDR3 and any TCI-compatible server:
+  freq / mode / PTT / split, panorama spots, **audio in both directions** and a
+  full console. See *TCI audio* below.
+
+**CAT sharing:** OpsLog can hand the radio on to other programs while it holds
+the port — a **Hamlib NET rigctl** server (WSJT-X, JTDX, MSHV, fldigi…) or a
+**TCI** server. One or the other, on a port you choose.
 
 Mode is taken from the radio; the digital sub-mode (FT4 vs FT8) is inferred from
 the frequency. **Per-band Flex RX/TX antennas** can be configured and are applied
@@ -126,6 +139,32 @@ Shown only when the CAT backend is a FlexRadio:
   in parallel). See *Amplifiers & switches* below.
 - **Live meters** over the UDP VITA-49 stream: S-meter (S-units), forward power
   (W), SWR, ALC, PA temperature, voltage, plus the amplifier's meters.
+
+### Elecraft K3 / K4 control tab
+
+Shown for the Elecraft and Kenwood backends: power, AF/RF gain, mic gain,
+squelch, preamp/attenuator, NB/NR/AGC, filter widths (200 Hz to 4.0 kHz, the
+K3 maximum and the one FT8 wants), antenna selection, MOX and the ATU
+(tap to tune, hold for in/out), RIT/XIT with ±10 / ±100 steps, key speed, and
+live S / power / SWR meters. The SWR is read from the radio's own `SW;`.
+
+### Yaesu control tab
+
+Shown for the Yaesu backend: power, mic gain, AGC, NB/NR, preamp/attenuator,
+filter width, RIT/XIT and the meters — the same shape as the others, driven by
+the FTDX's own CAT set.
+
+### SunSDR console (TCI)
+
+Shown for the TCI backend. Drive and tune drive, mic gain, TUNE, power and SWR
+while transmitting, volume, mute, squelch and its threshold, NB / NR / ANF,
+APF in CW, AGC speed, filter widths **offered per mode**, RIT and XIT, and the
+VFO lock. Levels can be dragged, scrolled, stepped or typed. The S-meter reads
+real dBm, so its S-units are arithmetic rather than a calibration guess.
+
+It costs nothing to keep open: TCI **pushes** every setting as it changes —
+including changes made in the radio's own window, which the console follows
+without asking anything.
 
 ### Icom control tab
 
@@ -172,6 +211,17 @@ as Mumble.)
 - **QSO audio recording:** continuous rolling capture; on *Log QSO* the contact
   is saved to a per-QSO WAV (`CALL_YYYYMMDD_HHMMSS.wav`); mixes RX + mic.
 
+### TCI audio — no virtual cable
+
+A SunSDR carries its audio on the same WebSocket as its commands, so OpsLog can
+take it directly. Pick **Radio (TCI network audio)** as the *From radio* or
+*To radio* device and the QSO recorder and the voice keyer work with no virtual
+audio cable, no second sound card and nothing to set in the Windows mixer.
+
+Transmit needs no setting up in ExpertSDR3 either: the audio source is named on
+each key-down, so it works in SSB as well as the digital modes, and the
+microphone stays the source for every transmission that is not a voice message.
+
 ## Amplifiers & switches
 
 - **Amplifiers** — configure **one or several** amps (Settings → Amplifier is a
@@ -185,12 +235,24 @@ as Mumble.)
     **network** (RS232-to-Ethernet bridge) — operate/standby, ON/OFF,
     Low / Mid / High output level, an output-power bar and live status (band,
     SWR, PA current, temperature, warnings/alarms).
-  - **ACOM** (500S / 600S / 700S / 1200S / 2020S) over **USB** or the **network**
+  - **Acom** (500S / 600S / 700S / 1200S / 2020S) over **USB** or the **network**
     (RS232-to-Ethernet bridge) — operate/standby/off and live telemetry (forward
     & reflected power, SWR, PA temperature, band, fan, faults). Power-ON works
     over a serial cable that wires the DTR/RTS lines.
+  - **Elecraft KPA500 / KPA1500** over **USB** (serial) or — on the KPA1500 —
+    over the **network**. Operate/standby, on/off, forward power, SWR,
+    temperature, supply voltage and current, the band, and faults named in plain
+    words rather than as a code. The amplifier follows the radio's band by
+    itself, on the link already open — it has a band command of its own, so no
+    second serial port is involved.
+
+  An amplifier that takes its band from a transceiver instead (Acom, SPE) can be
+  followed a second way: OpsLog answers its frequency polls as a Kenwood rig on
+  a **second COM port**, independent of the control link.
 - **Antenna Genius** (4O3A) antenna switch over TCP/GSCP — a docked A/B
-  antenna-switch widget.
+  antenna-switch widget, and an option to write the **selected antenna into
+  MY_ANTENNA** under the name the switch itself carries.
+- **Tuner Genius XL** (4O3A) over TCP — SWR and power, TUNE / BYPASS / OPERATE.
 - **Station Control** panel (dockable, drag-to-reorder widgets): the **rotator**,
   **Ultrabeam** element control and **relay boards** — WebSwitch 1216H, KMTronic,
   **Denkovi** USB (FT245 D2XX bit-bang, 4 or 8 relays) and generic USB-serial
@@ -207,8 +269,18 @@ as Mumble.)
   reference assignment, live reference detection on call entry, **reference-list
   import** for totals/names, and a **Rescan** that re-pulls the logbook (picks up
   fresh LoTW/QRZ confirmations).
-- **QSL services:** ClubLog (batched ADIF upload), LoTW, QRZ.com, eQSL — upload
-  and **confirmation download** (which auto-refreshes the award stats).
+- **Award statistics** by band and by mode class, with the **DXCC Challenge**
+  worked out where it can be compared to LoTW's own figure — it counts confirmed
+  band-slots on ten bands, and 60 m is not one of them, which is the whole of the
+  usual discrepancy. The band columns follow the bands you actually have contacts
+  on, up to and beyond 23 cm.
+- **Russian districts (RDA):** an offline district database that knows where a
+  callsign was **on the day of the contact**, a bulk fill for existing QSOs, and
+  a comparison against the district an imported log carries — each disagreement
+  settled on its own row, with the choice written into the contact.
+- **QSL services:** ClubLog (batched ADIF upload), LoTW, QRZ.com, eQSL,
+  **Cloudlog / Wavelog** and **HAMLOG.online** — upload and **confirmation
+  download** (which auto-refreshes the award stats).
 - **QSL Card Designer** (see below).
 - **E-mail eQSL:** right-click a QSO → *Send eQSL by e-mail* via the configured
   SMTP account. (Outlook/Hotmail disable basic-auth SMTP — use Gmail with an app
@@ -269,6 +341,10 @@ only writes to the DB — it is not a web server.
 - **UDP emitters:** push the current frequency to **PstRotator**, radio info in
   **N1MM `RadioInfo`** format, or an **ADIF record on each logged QSO** — so
   external tools (rotator control, digital apps, other loggers) stay in sync.
+- **CAT sharing:** a **Hamlib NET rigctl** or **TCI** server, so WSJT-X, JTDX,
+  MSHV, fldigi and the rest still reach the radio while OpsLog holds the port.
+- **WSJT-X / JTDX / MSHV** decodes over UDP: the heard stations feed the band
+  map, the alerts and — on a FlexRadio — the panadapter.
 
 ## Other
 
@@ -311,6 +387,19 @@ offered when MS Office installed it. Flags: flag-icons (MIT), embedded for the
 commonly-worked DXCC entities.
 
 ---
+
+## Importing a log
+
+- **ADIF import** with duplicate handling (skip / update / import anyway) and an
+  optional field mapping for exports that use their own names.
+- Optionally recompute country / continent / DXCC / zones from **cty.dat** and
+  the **ClubLog date-ranged exceptions** — which know that a callsign belonged to
+  a different entity on an older date.
+- **Deleted DXCC entities are left alone.** cty.dat only knows where a callsign
+  is *today*: R1MVI resolves to European Russia now, but a 2004 contact was Malyj
+  Vysotskij — an entity the ARRL deleted in 2012 and which can never be worked
+  again. Where a record names one of the sixty-odd deleted entities, its own
+  number is kept.
 
 ## Data & storage
 
