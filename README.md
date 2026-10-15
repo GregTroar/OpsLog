@@ -1,6 +1,6 @@
 # OpsLog
 
-<a href="https://discord.gg/tmVPdQ5A8" target="_blank">
+<a href="https://discord.gg/RJK7W7ze7" target="_blank">
   <img src="https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white" alt="Join our Discord" />
 </a>
 
