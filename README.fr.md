@@ -1,19 +1,40 @@
 # OpsLog
 
-<a href="https://www.paypal.com/donate?hosted_button_id=R9TC4KXWR96UE" target="_blank">
-  <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate with PayPal" />
+<a href="https://discord.gg/RJK7W7ze7" target="_blank">
+  <img src="https://img.shields.io/badge/Discord-Rejoindre%20le%20serveur-5865F2?logo=discord&logoColor=white" alt="Rejoindre notre Discord" />
 </a>
-<a href="https://discord.gg/FYM8yw5pT" target="_blank">
-  <img src="https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white" alt="Join our Discord" />
+<a href="https://github.com/GregTroar/OpsLog/wiki/Home-fr" target="_blank">
+  <img src="https://img.shields.io/badge/Manuel-Lire%20le%20Wiki-0A7CFF?logo=readthedocs&logoColor=white" alt="Lire le manuel" />
 </a>
 
-Un logiciel de log radioamateur moderne et rapide pour Windows — saisie façon
-Log4OM, CAT en temps réel pour **OmniRig**, **FlexRadio/SmartSDR** natif,
+> # 📖 Tu cherches le manuel ?
+>
+> ### ➡ **[LE WIKI OPSLOG](https://github.com/GregTroar/OpsLog/wiki/Home-fr)** — le manuel complet, une quarantaine de pages.
+>
+> Personne ne le trouve, alors il est annoncé ici en premier. Toutes les
+> fonctions y sont documentées, **en français et en anglais** :
+>
+> | | |
+> |---|---|
+> | **Commencer** | [Installation](https://github.com/GregTroar/OpsLog/wiki/Installation-fr) · [Prise en main](https://github.com/GregTroar/OpsLog/wiki/Getting-Started-fr) · [Windows, Linux, macOS](https://github.com/GregTroar/OpsLog/wiki/Platforms-fr) |
+> | **La radio** | [Pilotage CAT](https://github.com/GregTroar/OpsLog/wiki/CAT-Control-fr) · [FlexRadio](https://github.com/GregTroar/OpsLog/wiki/FlexRadio-fr) · [Icom](https://github.com/GregTroar/OpsLog/wiki/Icom-fr) · [Yaesu](https://github.com/GregTroar/OpsLog/wiki/Yaesu-fr) · [Kenwood et Xiegu](https://github.com/GregTroar/OpsLog/wiki/Kenwood-and-Xiegu-fr) · [Station distante](https://github.com/GregTroar/OpsLog/wiki/Remote-Station-fr) |
+> | **Le trafic** | [Cluster DX et spots](https://github.com/GregTroar/OpsLog/wiki/DX-Cluster-and-Spots-fr) · [Modes numériques](https://github.com/GregTroar/OpsLog/wiki/Digital-Modes-and-GridTracker-fr) · [Contest](https://github.com/GregTroar/OpsLog/wiki/Contest-Logging-fr) · [Cartes et antennes](https://github.com/GregTroar/OpsLog/wiki/Maps-and-Antennas-fr) · [Amplis et commutateurs](https://github.com/GregTroar/OpsLog/wiki/Amplifiers-and-Switches-fr) · [Audio et manipulateurs](https://github.com/GregTroar/OpsLog/wiki/Audio-and-Keyers-fr) |
+> | **Le journal** | [Bases du log](https://github.com/GregTroar/OpsLog/wiki/Logging-Basics-fr) · [Import/export ADIF](https://github.com/GregTroar/OpsLog/wiki/Import-and-Export-ADIF-fr) · [Diplômes](https://github.com/GregTroar/OpsLog/wiki/Awards-fr) · [Gestion des QSL](https://github.com/GregTroar/OpsLog/wiki/QSL-Management-fr) · [Profils et bases](https://github.com/GregTroar/OpsLog/wiki/Profiles-and-Databases-fr) |
+> | **Quand ça coince** | [Dépannage](https://github.com/GregTroar/OpsLog/wiki/Troubleshooting-fr) · [le Discord](https://discord.gg/RJK7W7ze7) |
+>
+> 🇬🇧 **[The same in English](https://github.com/GregTroar/OpsLog/wiki)**
+
+Un logiciel de log radioamateur moderne et rapide pour **Windows, Linux et
+macOS** — saisie en bandeau unique, CAT en temps réel sur douze backends :
+**OmniRig**, **FLRig**, **FlexRadio/SmartSDR** natif (LAN et SmartLink),
 **Icom CI-V** natif (USB **et** à distance par internet, en remplacement de
-RS-BA1) et **TCI** (SunSDR / Expert Electronics), cluster DX avec alertes de
-spots, suivi des diplômes, cartes, log de concours, gestion des QSL et un
-concepteur de cartes QSL. Construit avec **Wails v2** (backend Go + frontend
-React/TypeScript), **100 % Go** (sans CGO) : SQLite pour la configuration,
+RS-BA1), **Yaesu** dans ses trois protocoles, **Kenwood** et
+**Elecraft K3/K4**, **Xiegu**, **TCI** (SunSDR / Expert Electronics) et un autre
+OpsLog qui tient la radio — plus le partage du CAT pour que WSJT-X et compagnie
+utilisent la même liaison, cluster DX avec alertes de spots, suivi des
+diplômes, cartes, un graphe de propagation bande × heure, log de concours,
+gestion des QSL et un concepteur de cartes QSL. Construit avec **Wails v2** (backend Go + frontend
+React/TypeScript), **100 % Go** (aucune bibliothèque cgo, SQLite comprise) : SQLite pour la configuration,
 **MySQL partagé** optionnel pour le journal afin que plusieurs opérateurs
 partagent un même log. Entièrement thémable et bilingue (anglais / français).
 
@@ -35,7 +56,7 @@ Développé par **F4BPO**.
 
 ## Journalisation
 
-- **Bandeau de saisie façon Log4OM :** indicatif, RST émis/reçu, nom/QTH/locator,
+- **Bandeau de saisie unique :** indicatif, RST émis/reçu, nom/QTH/locator,
   bande/mode, fréquence TX/RX (split), heure de début/fin, commentaire/note. Le
   **drapeau** de l'entité contactée est affiché en grand à côté des champs RST.
 - **Recherche d'indicatif** (QRZ.com / HamQTH) avec photo, pré-remplissage du
@@ -45,7 +66,10 @@ Développé par **F4BPO**.
   district (`/8`, `/W6`), plus les dérogations DXpédition de ClubLog par dates.
 - **QSO récents**, matrice **déjà contactés** (par créneau bande/mode),
   re-résolution en masse depuis cty/QRZ/ClubLog, envoi en masse vers les services
-  QSL.
+  QSL. Un **compteur de sélection** en direct, une bascule **Tout sélectionner /
+  Tout désélectionner**, et une limite d'affichage qui garde le journal complet
+  rapide **mais qui saute dès qu'un filtre est actif** (toutes les correspondances
+  sont montrées, pas seulement la première page).
 - **Constructeur de filtres QSO avancé** (champ / opérateur / valeur, ET / OU,
   préréglages enregistrés) avec **export ADIF** des lignes filtrées ou
   sélectionnées.
@@ -70,7 +94,9 @@ Développé par **F4BPO**.
   légendés) et le(s) **lobe(s) du faisceau d'antenne** tracés depuis l'azimut du
   rotor.
 - **Compas de rotor** (azimutal équidistant, clic pour tourner) piloté par
-  PstRotator.
+  **PstRotator** (UDP), un **Rotator Genius 4O3A** (TCP natif) ou un **microHAM
+  ARCO** contrôlé nativement — sans PstRotator — via le **réseau** ou l'**USB**
+  avec son protocole Yaesu GS-232A.
 - **Support Ultrabeam** (Normal / inversé 180° / bidirectionnel) : la direction
   rayonnée est en vert et le **boom mécanique** en gris, à la fois sur le compas
   et sur la carte, pour toujours savoir où pointe l'antenne.
@@ -84,10 +110,12 @@ Développé par **F4BPO**.
   Cluster et le volet cluster de la vue principale, avec bascule affichage/masquage.
 - **Statut** par spot (nouveau / nouvelle bande / nouveau créneau / contacté),
   clic pour accorder la radio, et une **bandmap** multi-bandes (bandes façon
-  panadapter).
+  panadapter). En option, tous les **modes numériques comptent comme un seul**
+  (style DXCC) pour le coloriage nouveau/nouveau-créneau et les badges de la
+  matrice des déjà-contactés (Réglages → Général).
 - Les spots **POTA** sont étiquetés avec leur référence de parc (via
   `api.pota.app`).
-- **Alertes de spots** (façon Log4OM) : règles sur indicatif / pays / bande /
+- **Alertes de spots :** règles sur indicatif / pays / bande /
   mode / spotter, avec notification sonore, visuelle et e-mail (Outils →
   *Gestion des alertes*).
 
@@ -100,7 +128,8 @@ connexion rapide non bloquante — une radio éteinte ne fige jamais l'applicati
   supportée par OmniRig.
 - **FlexRadio (SmartSDR)** via l'API TCP de la radio — fréquence / mode / split
   de la slice en temps réel, découverte UDP, et **spots panadapter** (les spots
-  du cluster poussés sur l'écran Flex, clic → remplir l'indicatif).
+  du cluster poussés sur l'écran Flex ; un clic remplit l'indicatif et **accorde
+  la radio sur la bonne fréquence ET le bon mode**).
 - **Icom CI-V** — natif, via le port **USB** de la radio *ou* par internet via le
   **serveur LAN intégré** de la radio (voir *Icom à distance* ci-dessous). Ni
   RS-BA1 ni Remote Utility nécessaires.
@@ -117,9 +146,17 @@ Affiché uniquement quand le backend CAT est une FlexRadio :
 
 - **Émission :** puissance RF, puissance d'accord, TUNE, MOX, processeur de
   parole (NOR/DX/DX+), VOX (+ niveau + délai), moniteur (+ niveau), gain micro.
-- **Réception (slice active) :** mode/seuil AGC, niveau audio, NB / NR / ANF.
+- **Réception (slice active) :** sélecteurs d'**antenne** RX/TX et une bascule
+  **DAX** (audio d'émission via DAX, pour WSJT-X & co), mode/seuil AGC, niveau
+  audio, NB / WNB / NR / ANF, et — sur les radios **SmartSDR v4** (séries 8000 /
+  Aurora) — les filtres DSP supplémentaires **NRL, NRS, NRF** (avec niveau) plus
+  **RNN** (réduction de bruit par IA) et **ANFT** (notch automatique FFT),
+  affichés automatiquement si la radio les supporte. **RIT / XIT** avec accord
+  molette / ±.
 - **Coupleur d'antenne (ATU) :** accord / bypass / mémoires.
-- **Amplificateur :** PowerGenius XL operate/standby + défaut.
+- **Amplificateur :** la carte de commande suit l'ampli configuré, avec une liste
+  déroulante pour le choisir quand **plusieurs amplificateurs** sont configurés
+  (p. ex. deux SPE en parallèle). Voir *Amplis & commutateurs* ci-dessous.
 - **Mesures en direct** via le flux UDP VITA-49 : S-mètre (unités S), puissance
   directe (W), ROS, ALC, température PA, tension, plus les mesures de l'ampli.
 
@@ -166,9 +203,10 @@ avec le panadapter en flux, et Marche/Arrêt manuel. (L'audio est hors périmèt
 ## Keyers & audio
 
 - **Keyer CW** avec macros et macros sur touches F. Le moteur du keyer est
-  sélectionnable : **WinKeyer** (K1EL WK1/2/3 sur port COM), **Icom** (le keyer
-  intégré de la radio via CI-V — sans matériel supplémentaire, fonctionne aussi à
-  distance) ou **TCI**.
+  sélectionnable : **WinKeyer** (K1EL WK1/2/3 sur port COM), **FlexRadio CWX**
+  (le keyer intégré de la radio via l'API SmartSDR — type-ahead et retour arrière,
+  sans WinKeyer ni SmartCAT), **Icom** (le keyer intégré de la radio via CI-V —
+  sans matériel supplémentaire, fonctionne aussi à distance) ou **TCI**.
 - **Keyer vocal numérique** (DVK) : enregistrer les messages vocaux F1–F6 et les
   émettre.
 - **Enregistrement audio des QSO :** capture continue en tampon glissant ; au
@@ -177,10 +215,33 @@ avec le panadapter en flux, et Marche/Arrêt manuel. (L'audio est hors périmèt
 
 ## Amplis & commutateurs
 
-- Amplificateur **PowerGenius XL** (4O3A) — TCP direct : operate/standby,
-  sélecteur de mode ventilateur et affichage des défauts.
+- **Amplificateurs** — configurez **un ou plusieurs** amplis (Réglages →
+  Amplificateur est une liste ; p. ex. deux SPE en parallèle pour plus de
+  puissance). La carte de chaque ampli apparaît sur l'onglet FlexRadio et dans
+  **Station Control**, avec une liste déroulante pour choisir lequel afficher ; la
+  barre de statut du bas porte **une pastille cliquable par ampli** (vert =
+  OPERATE, orange = STANDBY, rouge = hors ligne). Supportés :
+  - **PowerGenius XL** (4O3A) en TCP direct — operate/standby, sélecteur de mode
+    ventilateur et affichage des défauts.
+  - **SPE Expert** (1.3K-FA / 1.5K-FA / 2K-FA) via **USB** (COM virtuel) ou le
+    **réseau** (pont RS232-Ethernet) — operate/standby, Marche/Arrêt, niveau de
+    sortie Low / Mid / High, une barre de puissance et le statut en direct (bande,
+    ROS, courant PA, température, avertissements/alarmes).
+  - **ACOM** (500S / 600S / 700S / 1200S / 2020S) via **USB** ou le **réseau**
+    (pont RS232-Ethernet) — operate/standby/arrêt et télémétrie en direct
+    (puissance directe & réfléchie, ROS, température PA, bande, ventilateur,
+    défauts). La mise en marche fonctionne via un câble série reliant les lignes
+    DTR/RTS.
 - Commutateur d'antenne **Antenna Genius** (4O3A) via TCP/GSCP — un widget de
   commutation A/B ancré.
+- Panneau **Station Control** (ancrable, widgets réordonnables par glisser) : le
+  **rotor**, la commande d'éléments **Ultrabeam** et des **cartes relais** —
+  WebSwitch 1216H, KMTronic, **Denkovi** USB (bit-bang FT245 D2XX, 4 ou 8 relais)
+  et USB-série générique (CH340 / LCUS, protocole A0) — pour l'alimentation, les
+  antennes et accessoires de la station.
+- **Relais automatiques** (Réglages) : bascule les relais de Station Control
+  automatiquement selon la fréquence / bande de la radio (comme PstRotator) — par
+  relais, une fenêtre de fréquence ou un ensemble de bandes.
 
 ## QSL & diplômes
 
@@ -208,13 +269,23 @@ avec le panadapter en flux, et Marche/Arrêt manuel. (L'audio est hors périmèt
   un début/fin de fenêtre, signale les doublons et tient un tableau de score en
   direct.
 
+## Statistiques
+
+- **Tableau de bord des statistiques :** tuiles de synthèse (QSO, indicatifs
+  uniques, entités DXCC, continents, % confirmés) plus des graphiques — QSO **par
+  mode**, un split **CW / phonie / data** par bande, l'**activité dans le temps**
+  (vues glissantes jour / 7 jours / 30 jours / 12 mois), par opérateur et par
+  continent. Filtres par plage de dates, par opérateur et par concours, et une vue
+  **Table** qui reprend chaque graphique.
+
 ## Statut opérateur en direct (événements spéciaux)
 
 Pour un indicatif d'événement spécial multi-op sur un journal MySQL partagé (ex.
-**TM74TFR**) : Réglages → Général → *Publier le statut opérateur en direct*.
+**TM74TFR**), la publication est **automatique** — aucun réglage à activer.
 Chaque instance OpsLog envoie un battement de cœur de son activité (indicatif de
 l'opérateur, bande, fréquence, mode) dans une table `live_status` toutes les
-~15 s. Un petit rendu PHP
+~15 s, et repasse *hors antenne* automatiquement 5 min après le dernier QSO
+logué. Un petit rendu PHP
 ([`docs/livestatus/tm74-status.php`](docs/livestatus/tm74-status.php)) sur votre
 propre serveur web lit cette table et produit une page/image en direct que vous
 pouvez intégrer sur la bio **QRZ.com** de la station
@@ -224,8 +295,11 @@ ce n'est pas un serveur web.
 ## Net control
 
 - **Log de net dirigé** (Outils → Net) : un roster global (`nets.json`) plus une
-  session active en mémoire — pointez les stations présentes, puis loguez tout le
-  net d'un coup en utilisant la fréquence CAT.
+  session active en mémoire — pointez les stations présentes, puis loguez-les une
+  par une ou tout le net d'un coup (**Logger tout le monde**) en utilisant la
+  fréquence CAT. **Glisser-déposer** entre les deux listes (roster → on air démarre
+  un QSO, on air → roster l'enregistre), et après chaque log la station on air
+  suivante est sélectionnée automatiquement pour enchaîner les contacts.
 
 ## Apparence & langue
 
@@ -254,7 +328,10 @@ ce n'est pas un serveur web.
 - **Démarrage automatique :** lancer des programmes externes (WSJT-X, JTAlert,
   contrôle de rotor…) au démarrage d'OpsLog, en sautant ceux déjà lancés.
 - **Sauvegarde :** sauvegarde optionnelle base + ADIF à la fermeture.
-- **Vérification de mise à jour** au démarrage avec un toast (désactivable).
+- **Vérification de mise à jour** au démarrage et toutes les 5 minutes (et à
+  l'ouverture d'Aide → À propos), avec un toast (désactivable), plus une fenêtre
+  **Nouveautés** qui affiche le changelog (anglais / français) au premier
+  lancement après une mise à jour — réouvrable à tout moment depuis le menu Aide.
 - **Télémétrie d'usage anonyme** (un battement de cœur quotidien : ID
   d'installation aléatoire + version + OS — aucune donnée d'indicatif ou de QSO ;
   désactivable dans les Préférences).

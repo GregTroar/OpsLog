@@ -3,13 +3,37 @@
 <a href="https://discord.gg/RJK7W7ze7" target="_blank">
   <img src="https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white" alt="Join our Discord" />
 </a>
+<a href="https://github.com/GregTroar/OpsLog/wiki" target="_blank">
+  <img src="https://img.shields.io/badge/Manual-Read%20the%20Wiki-0A7CFF?logo=readthedocs&logoColor=white" alt="Read the manual" />
+</a>
 
-A modern, fast ham-radio logger for Windows — single-strip entry, real-time CAT
-for **OmniRig**, native **FlexRadio/SmartSDR**, native **Icom CI-V** (USB **and**
-remote-over-internet, replacing RS-BA1) and **TCI** (SunSDR / Expert Electronics),
-DX cluster with spot alerts, awards tracking, maps, contest logging, QSL
+> # 📖 Looking for the manual?
+>
+> ### ➡ **[THE OPSLOG WIKI](https://github.com/GregTroar/OpsLog/wiki)** — the full manual, forty-odd pages.
+>
+> Nobody finds it, so it is said here first. Every feature is documented there,
+> in **English and French**:
+>
+> | | |
+> |---|---|
+> | **Start here** | [Installation](https://github.com/GregTroar/OpsLog/wiki/Installation) · [Getting Started](https://github.com/GregTroar/OpsLog/wiki/Getting-Started) · [Windows, Linux, macOS](https://github.com/GregTroar/OpsLog/wiki/Platforms) |
+> | **The radio** | [CAT Control](https://github.com/GregTroar/OpsLog/wiki/CAT-Control) · [FlexRadio](https://github.com/GregTroar/OpsLog/wiki/FlexRadio) · [Icom](https://github.com/GregTroar/OpsLog/wiki/Icom) · [Yaesu](https://github.com/GregTroar/OpsLog/wiki/Yaesu) · [Kenwood & Xiegu](https://github.com/GregTroar/OpsLog/wiki/Kenwood-and-Xiegu) · [Remote Station](https://github.com/GregTroar/OpsLog/wiki/Remote-Station) |
+> | **Operating** | [DX Cluster & spots](https://github.com/GregTroar/OpsLog/wiki/DX-Cluster-and-Spots) · [Digital modes](https://github.com/GregTroar/OpsLog/wiki/Digital-Modes-and-GridTracker) · [Contest](https://github.com/GregTroar/OpsLog/wiki/Contest-Logging) · [Maps & antennas](https://github.com/GregTroar/OpsLog/wiki/Maps-and-Antennas) · [Amplifiers & switches](https://github.com/GregTroar/OpsLog/wiki/Amplifiers-and-Switches) · [Audio & keyers](https://github.com/GregTroar/OpsLog/wiki/Audio-and-Keyers) |
+> | **The log** | [Logging basics](https://github.com/GregTroar/OpsLog/wiki/Logging-Basics) · [ADIF import/export](https://github.com/GregTroar/OpsLog/wiki/Import-and-Export-ADIF) · [Awards](https://github.com/GregTroar/OpsLog/wiki/Awards) · [QSL management](https://github.com/GregTroar/OpsLog/wiki/QSL-Management) · [Profiles & databases](https://github.com/GregTroar/OpsLog/wiki/Profiles-and-Databases) |
+> | **When it misbehaves** | [Troubleshooting](https://github.com/GregTroar/OpsLog/wiki/Troubleshooting) · [the Discord](https://discord.gg/RJK7W7ze7) |
+>
+> 🇫🇷 **[La même chose en français](https://github.com/GregTroar/OpsLog/wiki/Home-fr)**
+
+A modern, fast ham-radio logger for **Windows, Linux and macOS** — single-strip
+entry, real-time CAT over twelve backends: **OmniRig**, **FLRig**, native
+**FlexRadio/SmartSDR** (LAN and SmartLink), native **Icom CI-V** (USB **and**
+remote-over-internet, replacing RS-BA1), **Yaesu** in all three of its
+protocols, **Kenwood** and **Elecraft K3/K4**, **Xiegu**, **TCI** (SunSDR /
+Expert Electronics) and another OpsLog holding the radio — plus CAT sharing so
+WSJT-X & co use the same rig link, a DX cluster with spot alerts, awards
+tracking, maps, a band × hour propagation chart, contest logging, QSL
 management and a QSL-card designer. Built with **Wails v2** (Go backend +
-React/TypeScript frontend), **pure Go** (no CGO): SQLite for configuration,
+React/TypeScript frontend), **pure Go** (no cgo libraries — SQLite included): SQLite for configuration,
 optional **shared MySQL** for the logbook so several operators can run one log.
 Fully themeable and bilingual (English / French).
 
@@ -21,6 +45,9 @@ Developed by **F4BPO**.
 
 - **Dev:** `wails dev` (Vite hot-reload; Go methods reachable at http://localhost:34115).
 - **Build:** `wails build` (use the project's wails v2.11 — `~/go/bin/wails.exe`).
+  The Windows build needs no CGO and cross-builds from Linux; **Linux** and
+  **macOS** link the system web view, so each is built on its own platform —
+  see `BUILDING-LINUX.md` and `BUILDING-MACOS.md`.
 - **Regenerate Go↔TS bindings** after changing exported `App` methods:
   `wails generate module`.
 - **Release:** `.vscode/release.ps1` (Ctrl+Shift+P → *Tasks: Run Task* →
@@ -58,12 +85,12 @@ Developed by **F4BPO**.
 
 ## Maps & antenna
 
-- **Main view = two configurable panes** (per profile, Settings → General →
-  *Main view*): great-circle map, locator (street) map, the cluster grid, the
+- **Main view = a grid of configurable panes** (per profile, Settings → General →
+  *Main view*): pick the shape — up to **2 rows by 5 columns** — then what goes
+  in each cell: great-circle map, locator (street) map, the cluster grid, the
   worked-before grid, recent QSOs, the **FT decodes**, or any of the radio
   consoles — **FlexRadio**, **Icom**, **Yaesu**, **Elecraft K3/K4**, **SunSDR
-  (TCI)** — and the **Net control** panel. Up to four panes, in columns or a
-  quadrant.
+  (TCI)** — and the **Net control** panel. Every divider is draggable.
 - **Great-circle map** with short/long-path distance & azimuth, selectable
   basemaps (Light / Topo / Street / Satellite — Esri tiles, key-free and
   labelled) and the **antenna beam lobe(s)** drawn from the rotor azimuth.
