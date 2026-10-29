@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Help with a setup (Discord) / Aide pour une installation
+    url: https://discord.gg/RJK7W7ze7
+    about: A rig, a device or a service that will not talk — Discord answers faster than an issue.
+  - name: Manual / Manuel (wiki)
+    url: https://github.com/GregTroar/OpsLog/wiki
+    about: Most "how do I" questions are answered there, in English and in French.

@@ -1,0 +1,22 @@
+name: Suggestion / Suggestion
+description: An idea for OpsLog — une idée pour OpsLog
+labels: ["enhancement"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: OpsLog version
+      placeholder: 0.51.24
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea / L'idée
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What it changes at the station / Ce que ça change à la station
+      description: >-
+        How you work today without it — the operating problem matters more than the feature.
+        Comment vous faites aujourd'hui sans : le problème d'exploitation compte plus que la fonction.

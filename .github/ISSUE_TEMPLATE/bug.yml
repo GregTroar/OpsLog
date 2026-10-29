@@ -1,0 +1,44 @@
+name: Bug report / Signaler un défaut
+description: Something OpsLog gets wrong — un défaut d'OpsLog
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open this form from OpsLog's **Help** menu and the version and system boxes fill themselves in.
+        Ouvrez ce formulaire depuis le menu **Aide** d'OpsLog : la version et le système se remplissent tout seuls.
+  - type: input
+    id: version
+    attributes:
+      label: OpsLog version
+      placeholder: 0.51.24
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: System and station / Système et station
+      render: text
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens / Ce qui se passe
+      description: And what you expected instead — et ce que vous attendiez à la place.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to reproduce / Comment le reproduire
+      placeholder: |
+        1.
+        2.
+        3.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log extract / Extrait du journal
+      description: >-
+        Help → View logs. No password and no API key: the issue is public.
+        Aide → Voir les journaux. Aucun mot de passe ni clé API : l'issue est publique.
+      render: text
