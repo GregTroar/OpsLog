@@ -7,6 +7,8 @@
   <img src="https://img.shields.io/badge/Manual-Read%20the%20Wiki-0A7CFF?logo=readthedocs&logoColor=white" alt="Read the manual" />
 </a>
 
+[![Download](https://img.shields.io/github/downloads/GregTroar/OpsLog/total?logo=github&label=Download&color=2ea44f)](https://github.com/GregTroar/OpsLog/releases)
+
 > # 📖 Looking for the manual?
 >
 > ### ➡ **[THE OPSLOG WIKI](https://github.com/GregTroar/OpsLog/wiki)** — the full manual, forty-odd pages.
