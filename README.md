@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Manual-Read%20the%20Wiki-0A7CFF?logo=readthedocs&logoColor=white" alt="Read the manual" />
 </a>
 
-[![Download](https://img.shields.io/github/downloads/GregTroar/OpsLog/latest/total?logo=github&label=Download&color=2ea44f)](https://github.com/GregTroar/OpsLog/releases)
+![Last version](https://img.shields.io/github/downloads/GregTroar/OpsLog/latest/total?logo=github&label=derni%C3%A8re%20version)
 
 > # 📖 Looking for the manual?
 >
